@@ -2,7 +2,7 @@
   <div class="grid place-items-center mx-2 sm:my-auto">
     <div class="flex">
       <span class="text-center font-bold mb-5 mx-auto text-3xl">
-        Bienvenue sur <span class="text-5xl">InnovateCollect</span>
+        Bienvenue sur <span class="text-5xl text-indigo-600">InnovateCollect</span>
       </span>
     </div>
 
@@ -11,7 +11,7 @@
           px-6 py-10 sm:px-10 sm:py-6
           bg-white rounded-lg shadow-md lg:shadow-lg">
 
-      <h2 class="text-center font-semibold text-3xl lg:text-4xl text-gray-800">
+      <h2 class="text-center font-semibold text-3xl lg:text-4xl text-indigo-600">
         Créer son compte
       </h2>
 
@@ -101,9 +101,10 @@
                   border-b-2 border-gray-100
                   focus:text-gray-500 focus:outline-none focus:border-gray-200" />
 
-        <button type="submit" class="w-full py-3 mt-10 bg-gray-800 rounded-sm
-                  font-medium text-white uppercase
-                  focus:outline-none hover:bg-gray-700 hover:shadow-none" (click)="register()" [disabled]="loading">
+        <button type="submit" class="w-full py-3 mt-10
+                  font-medium uppercase
+                  focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200"
+          (click)="register()" [disabled]="loading">
           Enregistrer
         </button>
 

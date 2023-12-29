@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { SupabaseService } from 'src/app/@core/services/supabase/supabase.service';
@@ -32,15 +32,7 @@ export class LoginComponent {
     };
 
     try {
-      const { data, error } = await this.supbaseService.login(dataForm);
-
-      if (data.user) {
-        console.log(
-          '🚀 ~ file: login.component.ts:37 ~ LoginComponent ~ login ~ data:',
-          data
-        );
-      }
-
+      const { error } = await this.supbaseService.login(dataForm);
       if (error) {
         console.log(
           '🚀 ~ file: login.component.ts:46 ~ LoginComponent ~ login ~ error:',
