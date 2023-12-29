@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { SupabaseService } from 'src/app/@core/services/supabase/supabase.service';
@@ -20,7 +20,8 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private supbaseService: SupabaseService
+    private supbaseService: SupabaseService,
+    private router: Router
   ) {}
 
   async login() {
@@ -44,6 +45,40 @@ export class LoginComponent {
         '🚀 ~ file: login.component.ts:52 ~ LoginComponent ~ login ~ error:',
         error
       );
+    }
+  }
+
+  async signInWithFacebook() {
+    this.loading = true;
+    const { data, error } = await this.supbaseService.signInWithFacebook();
+
+    if (data) {
+      console.log(
+        '🚀 ~ file: login.component.ts:56 ~ LoginComponent ~ signInWithFacebook ~ data:',
+        data
+      );
+      this.loading = false;
+      // this.router.navigate(['/dashboard/home']);
+    }
+    if (error) {
+      this.loading = false;
+    }
+  }
+
+  async signInWithGoogle() {
+    this.loading = true;
+    const { data, error } = await this.supbaseService.signInWithGoogle();
+
+    if (data) {
+      console.log(
+        '🚀 ~ file: login.component.ts:56 ~ LoginComponent ~ signInWithFacebook ~ data:',
+        data
+      );
+      this.loading = false;
+      // this.router.navigate(['/dashboard/home']);
+    }
+    if (error) {
+      this.loading = false;
     }
   }
 }

@@ -22,6 +22,7 @@ const AccesStorageKey = '__access__token';
 export class SupabaseService {
   private supabase: SupabaseClient;
   private redirectTo: string = 'http://localhost:4200/public/reset-password';
+  private redirectToHome: string = 'http://localhost:4200/dashboard/home';
   _session: AuthSession | null = null;
   private hasTokenExistMsg =
     'Impossible de se connecter. Veuillez vérifier les informations saisies.';
@@ -89,5 +90,22 @@ export class SupabaseService {
 
   getUser() {
     return this.supabase.auth.getUser();
+  }
+
+  signInWithFacebook() {
+    return this.supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: {
+        redirectTo: this.redirectToHome,
+      },
+    });
+  }
+  signInWithGoogle() {
+    return this.supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: this.redirectToHome,
+      },
+    });
   }
 }

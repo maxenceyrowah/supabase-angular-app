@@ -15,6 +15,7 @@ export class ResetPasswordComponent {
   resetForm = this.fb.group({
     password: ['', Validators.required],
   });
+  loading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -23,6 +24,7 @@ export class ResetPasswordComponent {
   ) {}
 
   async resetPassword() {
+    this.loading = true;
     try {
       const dataform = this.resetForm.value;
       const { password } = dataform;
@@ -31,10 +33,12 @@ export class ResetPasswordComponent {
       );
 
       if (data.user) {
+        this.loading = false;
         this.router.navigate(['/public/login']);
         alert('Veuillez vous connecter');
       }
     } catch (error) {
+      this.loading = false;
       console.log(
         '🚀 ~ file: reset-password.component.ts:33 ~ ResetPasswordComponent ~ resetPassword ~ error:',
         error

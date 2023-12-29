@@ -44,21 +44,40 @@
           Connecter
         </button>
 
-        <!-- Another Auth Routes -->
-        <div class="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
-          <a href="#" class="flex-2 underline" [routerLink]="['/public/forgot-password']">
-            Mot de passe oublie ?
-          </a>
-
-          <p class="flex-1 text-gray-500 text-md mx-4 my-1 sm:my-auto">
-            or
-          </p>
-
-          <a class="flex-2 underline" [routerLink]="['/public/register']">
-            Créer un compte
-          </a>
-        </div>
       </form>
+
+      <div class="flex md:justify-between justify-center items-center mt-10">
+        <div style="height: 1px;" class="bg-gray-300 md:block hidden w-4/12"></div>
+        <p class="md:mx-2 text-sm font-light text-gray-400"> Login With Social </p>
+        <div style="height: 1px;" class="bg-gray-300 md:block hidden w-4/12"></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-2 mt-7">
+        <div>
+          <button
+            class="text-center w-full text-white bg-blue-900 p-3 duration-300 rounded-sm hover:bg-blue-700 disabled:bg-indigo-50"
+            (click)="signInWithFacebook()" [disabled]="loading">Facebook</button>
+        </div>
+        <div>
+          <button class="text-center w-full text-white bg-red-500 p-3 duration-300 rounded-sm hover:bg-red-400"
+            (click)="signInWithGoogle()" [disabled]="loading">Gmail</button>
+        </div>
+      </div>
+
+      <!-- Another Auth Routes -->
+      <div class="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
+        <a href="#" class="flex-2 underline" [routerLink]="['/public/forgot-password']">
+          Mot de passe oublie ?
+        </a>
+
+        <p class="flex-1 text-gray-500 text-md mx-4 my-1 sm:my-auto">
+          or
+        </p>
+
+        <a class="flex-2 underline" [routerLink]="['/public/register']">
+          Créer un compte
+        </a>
+      </div>
     </div>
   </div>
 </div>
