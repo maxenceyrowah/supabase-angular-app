@@ -14,7 +14,7 @@ import { QuestionsService } from 'src/app/@core/services/questions/questions.ser
 })
 export class QuestionComponent implements OnInit {
   questionForm = this.fb.group({
-    schema: ['', [Validators.required]],
+    schema: [null, [Validators.required]],
     question: ['', [Validators.required]],
   });
   user: any;
@@ -61,6 +61,17 @@ export class QuestionComponent implements OnInit {
       ...entryData,
       user_id: this.user?.user_id,
     };
+
+    // const parsedJSON = JSON.parse(entryData.schema as any);
+    // console.log(
+    //   '🚀 ~ file: question.component.ts:66 ~ QuestionComponent ~ registerQuestion ~ parsedJSON:',
+    //   parsedJSON
+    // );
+    // const formattedJSON = JSON.stringify(parsedJSON, null, 2);
+    // console.log(
+    //   '🚀 ~ file: question.component.ts:67 ~ QuestionComponent ~ registerQuestion ~ formattedJSON:',
+    //   formattedJSON
+    // );
 
     this.supabase
       .postQuestion(dataForm)

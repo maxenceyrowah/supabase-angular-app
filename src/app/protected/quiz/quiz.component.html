@@ -1,0 +1,80 @@
+<div class="w-full lg:w-10/12 px-4 mx-auto mt-6 flex flex-col gap-5">
+  <div class="card" *ngIf="formStructure.length">
+    <h1 class="text-3xl mb-5">Formulaire du client</h1>
+    <div class="card-body">
+      <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div *ngFor="let control of formStructure" class="col-3">
+            <!-- Text, Textarea & Number -->
+            <div class="mb-3" *ngIf="['text', 'number', 'textarea', 'email'].includes(control.type)">
+              <label for="exampleFormControlInput1" class="form-label">
+                {{ control.label }}
+              </label>
+              <input [type]="control.type" class="block w-full py-3 px-1 mt-2 mb-4
+              text-gray-800 appearance-none
+              border-b-2
+              focus:text-gray-500 focus:outline-none focus:border-gray-200" [formControlName]="control.name"
+                *ngIf="control.type !== 'textarea'" />
+
+              <textarea rows="10" class="block w-full py-3 px-1 mt-2 mb-4
+                text-gray-800 appearance-none
+                border-b-2 border-gray-100
+                focus:text-gray-500 focus:outline-none focus:border-gray-200" [formControlName]="control.name"
+                *ngIf="control.type === 'textarea'">
+              </textarea>
+              <span class="text-red-500 text-xs italic" *ngIf="
+                  dynamicForm.controls[control.name]?.invalid &&
+                  dynamicForm.controls[control.name]?.touched
+                ">
+                {{ getErrorMessage(control) }}
+              </span>
+            </div>
+
+            <!-- Radio Button -->
+            <div class="mb-3" *ngIf="['radio'].includes(control.type)">
+              <div>
+                <label for="exampleFormControlInput1" class="form-label">
+                  {{ control.label }}
+                </label>
+              </div>
+              <div class="form-check form-check-inline" *ngFor="let option of control.options">
+                <input class="form-check-input cursor-pointer" type="radio" [formControlName]="control.name"
+                  id="inlineRadio1" [value]="option.value" />
+                <label class="form-check-label" for="inlineRadio1">
+                  {{ option.label }}</label>
+              </div>
+            </div>
+
+            <!-- Select  -->
+            <div class="mb-3" *ngIf="['select'].includes(control.type)">
+              <label for="exampleFormControlInput1" class="form-label">
+                {{ control.label }}
+              </label>
+              <select class="block w-full py-3 px-1 mt-2
+              text-gray-800
+              border-b-2 border-gray-100
+              focus:text-gray-500 focus:outline-none focus:border-gray-200" aria-label=" Default select example"
+                [formControlName]="control.name">
+                <option disabled selected hidden value="">Veuillez selectionner votre reponse</option>
+                <option *ngFor="let option of control.options" [value]="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+              <span class="text-red-500 text-xs italic" *ngIf="
+                  dynamicForm.controls[control.name]?.invalid &&
+                  dynamicForm.controls[control.name]?.touched
+                ">
+                {{ getErrorMessage(control) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="!this.dynamicForm.valid"
+          class="px-10 py-3 mt-10
+        font-medium uppercase
+        focus:outline-none hover:shadow-none bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200 disabled:bg-gray-200 disabled:text-gray-400">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -27,6 +27,11 @@ export const ProtectedRoutes: Routes = [
             (m) => m.QuestionComponent
           ),
       },
+      {
+        path: 'quiz',
+        loadComponent: () =>
+          import('./quiz//quiz.component').then((m) => m.QuizComponent),
+      },
     ],
   },
 ];
