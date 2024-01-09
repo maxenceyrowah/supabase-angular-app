@@ -6,6 +6,7 @@ import {
   AuthSession,
   Session,
   SupabaseClient,
+  User,
   UserResponse,
   createClient,
 } from '@supabase/supabase-js';
@@ -20,7 +21,7 @@ const AccesStorageKey = '__access__token';
   providedIn: 'root',
 })
 export class SupabaseService {
-  private supabase: SupabaseClient;
+  public supabase: SupabaseClient;
   private redirectTo: string = 'http://localhost:4200/public/reset-password';
   private redirectToHome: string = 'http://localhost:4200/dashboard/home';
   _session: AuthSession | null = null;
@@ -47,21 +48,56 @@ export class SupabaseService {
     return accesToken !== null;
   }
 
-  register(data: Iregister): Promise<AuthResponse> {
-    return this.supabase.auth.signUp(data);
+  async register(credentials: Iregister) {
+    const {
+      data: { user: userContent },
+      error,
+    } = await this.supabase.auth.signUp(credentials);
+
+    if (error) {
+      console.error("Erreur d'inscription:", error.message);
+      return;
+    }
+
+    await this.upsertUser(userContent);
+  }
+
+  getSessionEvent() {
+    this.supabase.auth.onAuthStateChange((event, session) => {
+      if (event && event === 'SIGNED_IN') {
+        this.upsertUser(session?.user);
+        this.router.navigate(['/dashboard/home']);
+      }
+    });
+  }
+
+  async upsertUser(user: User | null | undefined) {
+    const { error } = await this.supabase.from('users').upsert({
+      user_id: user?.id,
+      email: user?.email,
+      first_name: user?.user_metadata?.['first_name'],
+      last_name: user?.user_metadata?.['last_name'],
+      city: user?.user_metadata?.['city'],
+      gender: user?.user_metadata?.['gender'],
+      municipality: user?.user_metadata?.['municipality'],
+      birthday: user?.user_metadata?.['birthday'],
+      profile: 'USER',
+    });
+
+    if (error) {
+      console.error(
+        "Erreur lors de la création de l'utilisateur dans la table users:",
+        error.message
+      );
+      return;
+    }
   }
 
   logout(): Promise<{ error: AuthError | null }> {
     return this.supabase.auth.signOut();
   }
 
-  async login({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }): Promise<any> {
+  async login({ email, password }: { email: string; password: string }) {
     await this.supabase.auth.signInWithPassword({ email, password });
 
     const keys = Object.keys(localStorage);
@@ -100,12 +136,23 @@ export class SupabaseService {
       },
     });
   }
-  signInWithGoogle() {
+  async signInWithGoogle() {
     return this.supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: this.redirectToHome,
       },
     });
+  }
+
+  get getLocalStorage() {
+    const keys = Object.keys(localStorage);
+    const localStorageContent = localStorage.getItem(keys?.[0]) as string;
+
+    return JSON.parse(localStorageContent);
+  }
+
+  async postQuestion(question: Record<any, any>) {
+    return await this.supabase.from('questions').insert(question);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -31,54 +31,25 @@ export class LoginComponent {
       email: entryData?.email as string,
       password: entryData?.password as string,
     };
-
-    try {
-      const { error } = await this.supbaseService.login(dataForm);
-      if (error) {
-        console.log(
-          '🚀 ~ file: login.component.ts:46 ~ LoginComponent ~ login ~ error:',
-          error
-        );
-      }
-    } catch (error) {
-      console.log(
-        '🚀 ~ file: login.component.ts:52 ~ LoginComponent ~ login ~ error:',
-        error
-      );
-    }
+    await this.supbaseService.login(dataForm);
   }
 
   async signInWithFacebook() {
-    this.loading = true;
-    const { data, error } = await this.supbaseService.signInWithFacebook();
+    const { error } = await this.supbaseService.signInWithFacebook();
+    this.supbaseService.getSessionEvent();
+    this.router.navigate(['/dashboard/home']);
 
-    if (data) {
-      console.log(
-        '🚀 ~ file: login.component.ts:56 ~ LoginComponent ~ signInWithFacebook ~ data:',
-        data
-      );
-      this.loading = false;
-      // this.router.navigate(['/dashboard/home']);
-    }
     if (error) {
-      this.loading = false;
+      console.log('[signInWithFacebook] error', error);
     }
   }
-
   async signInWithGoogle() {
-    this.loading = true;
-    const { data, error } = await this.supbaseService.signInWithGoogle();
+    const { error } = await this.supbaseService.signInWithGoogle();
+    this.supbaseService.getSessionEvent();
+    this.router.navigate(['/dashboard/home']);
 
-    if (data) {
-      console.log(
-        '🚀 ~ file: login.component.ts:56 ~ LoginComponent ~ signInWithFacebook ~ data:',
-        data
-      );
-      this.loading = false;
-      // this.router.navigate(['/dashboard/home']);
-    }
     if (error) {
-      this.loading = false;
+      console.log('[signInWithGoogle] error', error);
     }
   }
 }

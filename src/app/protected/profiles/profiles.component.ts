@@ -8,6 +8,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UsersService } from 'src/app/@core/services/users/users.service';
 
 @Component({
   selector: 'app-profiles',
@@ -24,7 +25,8 @@ export class ProfilesComponent implements OnInit {
     private supabase: SupabaseService,
     private fb: FormBuilder,
     private supbaseService: SupabaseService,
-    private router: Router
+    private router: Router,
+    private userService: UsersService
   ) {}
 
   ngOnInit() {
@@ -33,14 +35,17 @@ export class ProfilesComponent implements OnInit {
   }
 
   getUser() {
-    this.supabase.getUser().then((response) => {
-      const currentUser = response?.data?.user;
-      const dataForm = {
-        ...currentUser?.user_metadata,
-        email: response?.data?.user?.email,
-      };
-      this.profilForm.patchValue(dataForm);
-    });
+    this.userService
+      .getUser()
+      .then((response) => {
+        const dataForm = response?.data?.[0];
+
+        this.user = dataForm;
+        this.profilForm.patchValue(dataForm);
+      })
+      .catch((error) => {
+        console.log('[] error', error);
+      });
   }
 
   updateUser() {
@@ -50,7 +55,7 @@ export class ProfilesComponent implements OnInit {
     this.supabase
       .updateMetaDonneeOfUser(rest)
       .then(() => {
-        this.getUser();
+        // this.getUser();
         this.loading = false;
       })
       .catch((error) => {

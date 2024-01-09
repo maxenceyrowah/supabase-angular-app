@@ -20,6 +20,13 @@ export const ProtectedRoutes: Routes = [
             (m) => m.ProfilesComponent
           ),
       },
+      {
+        path: 'questions',
+        loadComponent: () =>
+          import('./question/question.component').then(
+            (m) => m.QuestionComponent
+          ),
+      },
     ],
   },
 ];

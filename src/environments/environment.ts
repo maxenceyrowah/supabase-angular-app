@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
-  supabaseUrl: 'https://gubzplqybhdhahganaxg.supabase.co',
+  SUPABASE_API_URL: 'http://127.0.0.1:54321/rest/v1',
+  supabaseUrl: 'http://127.0.0.1:54321',
   supabaseKey:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1YnpwbHF5YmhkaGFoZ2FuYXhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDM2Nzc1OTksImV4cCI6MjAxOTI1MzU5OX0.22OvnJA168vPSP-6F-Z91dxDKgnR7QZDq3y-2iW00Oo',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0',
 };

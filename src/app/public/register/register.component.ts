@@ -5,7 +5,6 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { SupabaseService } from 'src/app/@core/services/supabase/supabase.service';
 import { Iregister } from 'src/app/@core/models/register';
-import { AuthError } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-register',
@@ -33,7 +32,7 @@ export class RegisterComponent {
     private router: Router
   ) {}
 
-  async register() {
+  register() {
     const entryData = this.registerForm.value;
     const {
       first_name,
@@ -61,29 +60,7 @@ export class RegisterComponent {
       },
     };
 
-    this.loading = true;
-
-    try {
-      const { data, error } = await this.supbaseService.register(dataForm);
-
-      if (data.user) {
-        this.loading = false;
-        this.router.navigate(['/public/login']);
-        this.registerForm.reset();
-      }
-
-      if (error) {
-        console.log(
-          '🚀 ~ file: register.component.ts:80 ~ RegisterComponent ~ register ~ error:',
-          error
-        );
-      }
-    } catch (error) {
-      this.loading = false;
-      console.log(
-        '🚀 ~ file: register.component.ts:67 ~ RegisterComponent ~ register ~ error:',
-        error
-      );
-    }
+    this.supbaseService.register(dataForm);
+    this.router.navigate(['/public/login']);
   }
 }
