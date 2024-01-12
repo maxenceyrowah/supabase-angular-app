@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { SupabaseService } from 'src/app/@core/services/supabase/supabase.service';
-import { UsersService } from 'src/app/@core/services/users/users.service';
 import { QuestionsService } from 'src/app/@core/services/questions/questions.service';
+import { UsersService } from 'src/app/@core/services/users/users.service';
 
 @Component({
-  selector: 'app-question',
+  selector: 'app-settings',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './question.component.html',
+  templateUrl: './settings.component.html',
 })
-export class QuestionComponent implements OnInit {
+export class SettingsComponent {
   questionForm = this.fb.group({
     schema: [null, [Validators.required]],
     question: ['', [Validators.required]],
@@ -22,7 +21,6 @@ export class QuestionComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private supabase: SupabaseService,
     private userService: UsersService,
     private questionService: QuestionsService
   ) {}
@@ -59,27 +57,12 @@ export class QuestionComponent implements OnInit {
 
     const dataForm = {
       ...entryData,
-      user_id: this.user?.user_id,
+      user_id: this.user?.id,
     };
 
-    // const parsedJSON = JSON.parse(entryData.schema as any);
-    // console.log(
-    //   '🚀 ~ file: question.component.ts:66 ~ QuestionComponent ~ registerQuestion ~ parsedJSON:',
-    //   parsedJSON
-    // );
-    // const formattedJSON = JSON.stringify(parsedJSON, null, 2);
-    // console.log(
-    //   '🚀 ~ file: question.component.ts:67 ~ QuestionComponent ~ registerQuestion ~ formattedJSON:',
-    //   formattedJSON
-    // );
-
-    this.supabase
+    this.questionService
       .postQuestion(dataForm)
       .then((result) => {
-        console.log(
-          '🚀 ~ file: question.component.ts:68 ~ QuestionComponent ~ .then ~ result:',
-          result
-        );
         this.questionForm.reset();
         this.getQuestions();
       })

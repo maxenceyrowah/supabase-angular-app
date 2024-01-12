@@ -13,11 +13,6 @@ export const publicRoutes: Routes = [
       import('./register/register.component').then((m) => m.RegisterComponent),
   },
   {
-    path: 'register-admin',
-    loadComponent: () =>
-      import('./admin/admin.component').then((m) => m.AdminComponent),
-  },
-  {
     path: 'forgot-password',
     loadComponent: () =>
       import('./forgot-password/forgot-password.component').then(

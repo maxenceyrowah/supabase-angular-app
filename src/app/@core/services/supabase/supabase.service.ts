@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 
 import {
   AuthError,
-  AuthResponse,
   AuthSession,
-  Session,
   SupabaseClient,
   User,
   UserResponse,
@@ -14,8 +12,6 @@ import {
 import { environment } from 'src/environments/environment.development';
 import { Iregister } from '../../models/register';
 import { Router } from '@angular/router';
-
-const AccesStorageKey = '__access__token';
 
 @Injectable({
   providedIn: 'root',
@@ -96,18 +92,23 @@ export class SupabaseService {
   logout(): Promise<{ error: AuthError | null }> {
     return this.supabase.auth.signOut();
   }
-
   async login({ email, password }: { email: string; password: string }) {
     await this.supabase.auth.signInWithPassword({ email, password });
 
     const keys = Object.keys(localStorage);
     const value_1 = localStorage.getItem(keys?.[0]) as string;
-    const accessToken = JSON.parse(value_1);
+    const supabaseAuthToken = JSON.parse(value_1);
+    const { data } = await this.supabase
+      .from('users')
+      .select('*')
+      .eq('user_id', supabaseAuthToken?.user?.id);
 
-    if (!accessToken) {
+    if (!supabaseAuthToken) {
       alert(this.hasTokenExistMsg);
       return;
     }
+    supabaseAuthToken['user']['user_metadata']['profile'] = data?.[0].profile;
+    localStorage.setItem(`${keys?.[0]}`, JSON.stringify(supabaseAuthToken));
     this.router.navigate(['/dashboard/home']);
   }
 
@@ -150,9 +151,5 @@ export class SupabaseService {
     const localStorageContent = localStorage.getItem(keys?.[0]) as string;
 
     return JSON.parse(localStorageContent);
-  }
-
-  async postQuestion(question: Record<any, any>) {
-    return await this.supabase.from('questions').insert(question);
   }
 }

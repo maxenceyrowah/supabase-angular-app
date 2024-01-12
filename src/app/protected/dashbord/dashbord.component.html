@@ -1,7 +1,7 @@
 <div class="relative bg-gray-50 dark:bg-slate-900 w-screen h-screen pattern">
   <nav
     class="z-20 flex shrink-0 grow-0 justify-around gap-4 border-t border-gray-200 bg-white/50 p-2.5 shadow-lg backdrop-blur-lg dark:border-slate-600/60 dark:bg-slate-800/50 fixed top-2/4 -translate-y-2/4 left-6 min-h-[auto] min-w-[64px] flex-col rounded-lg border">
-    <a [routerLink]="['/dashboard/questions']"
+    <a routerLink="/dashboard/settings" routerLinkActive="active" *appIfAdmin
       class="flex aspect-square min-h-[32px] w-16 flex-col items-center justify-center gap-1 p-1.5 dark:bg-sky-900 dark:text-sky-50 hover:bg-gray-100 bg-indigo-50 text-indigo-600 rounded-md">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -16,7 +16,7 @@
       <small class="text-center text-xs font-medium">Settings</small>
     </a>
 
-    <a [routerLink]="['/dashboard/quiz']"
+    <!-- <a routerLink="/dashboard/quiz" routerLinkActive="active" *appIfAuth
       class="flex aspect-square min-h-[32px] w-16 flex-col items-center justify-center gap-1 p-1.5 dark:bg-sky-900 dark:text-sky-50 hover:bg-gray-100 bg-indigo-50 text-indigo-600 rounded-md">
       <svg fill="#4F46E5" width="256px" height="256px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -29,9 +29,9 @@
       </svg>
 
       <small class="text-center text-xs font-medium">Quiz</small>
-    </a>
+    </a> -->
 
-    <a [routerLink]="['/dashboard/profiles']"
+    <a routerLink="/dashboard/profiles" routerLinkActive="active" *appIfAuth
       class="flex aspect-square min-h-[32px] w-16 flex-col items-center justify-center gap-1 p-1.5 dark:bg-sky-900 dark:text-sky-50 hover:bg-gray-100 bg-indigo-50 text-indigo-600 rounded-md">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
         class="w-6 h-6 shrink-0">
@@ -44,7 +44,7 @@
 
     <hr class="dark:border-gray-700/60" />
 
-    <a [routerLink]="['/dashboard/home']"
+    <a routerLink="/dashboard/home" routerLinkActive="active" *appIfAuth
       class="flex h-16 w-16 flex-col items-center justify-center gap-1 dark:text-gray-400 bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-100">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
         class="w-6 h-6">

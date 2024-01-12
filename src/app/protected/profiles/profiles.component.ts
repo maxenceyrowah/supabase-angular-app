@@ -38,10 +38,10 @@ export class ProfilesComponent implements OnInit {
     this.userService
       .getUser()
       .then((response) => {
-        const dataForm = response?.data?.[0];
+        const currentUser = response?.data?.[0];
 
-        this.user = dataForm;
-        this.profilForm.patchValue(dataForm);
+        this.user = currentUser;
+        this.profilForm.patchValue(currentUser);
       })
       .catch((error) => {
         console.log('[] error', error);

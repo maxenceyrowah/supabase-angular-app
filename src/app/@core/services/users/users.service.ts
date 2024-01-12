@@ -1,28 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
-import { environment } from 'src/environments/environment.development';
 import { SupabaseService } from '../supabase/supabase.service';
 
+enum Role {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(
-    private router: Router,
-    private supabaseInstance: SupabaseService
-  ) {}
+  roles: string[] = [Role.ADMIN];
+  constructor(private supabaseInstance: SupabaseService) {}
 
   getUsers() {
     return this.supabaseInstance.supabase.from('users').select('*');
   }
 
-  async getUser() {
+  async getUser(userId?: string) {
     const localStorage = this.supabaseInstance.getLocalStorage;
+    const currentUser = userId || localStorage?.user?.id;
 
     return await this.supabaseInstance.supabase
       .from('users')
       .select('*')
-      .eq('user_id', localStorage?.user?.id);
+      .eq('user_id', currentUser);
+  }
+
+  get isAdmin() {
+    const userConnected = this.supabaseInstance.getLocalStorage;
+    const roleOfUserConnected = userConnected['user']['user_metadata'].profile;
+    return this.roles.includes(roleOfUserConnected);
   }
 }

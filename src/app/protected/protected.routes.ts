@@ -1,4 +1,6 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
+import { UsersService } from '../@core/services/users/users.service';
 
 export const ProtectedRoutes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -15,22 +17,41 @@ export const ProtectedRoutes: Routes = [
       },
       {
         path: 'profiles',
+        canMatch: [() => !inject(UsersService).isAdmin],
         loadComponent: () =>
           import('./profiles/profiles.component').then(
             (m) => m.ProfilesComponent
           ),
       },
       {
-        path: 'questions',
+        path: 'settings',
+        canMatch: [() => inject(UsersService).isAdmin],
         loadComponent: () =>
-          import('./question/question.component').then(
-            (m) => m.QuestionComponent
+          import('./settings//settings.component').then(
+            (m) => m.SettingsComponent
           ),
       },
       {
         path: 'quiz',
+        canMatch: [() => !inject(UsersService).isAdmin],
         loadComponent: () =>
-          import('./quiz//quiz.component').then((m) => m.QuizComponent),
+          import('./quiz/quiz.component').then((m) => m.QuizComponent),
+      },
+      {
+        path: 'questions',
+        canMatch: [() => !inject(UsersService).isAdmin],
+        loadComponent: () =>
+          import('./questions/questions-list/questions-list.component').then(
+            (m) => m.QuestionsListComponent
+          ),
+      },
+      {
+        path: 'questions/:questionId/anwser',
+        canMatch: [() => !inject(UsersService).isAdmin],
+        loadComponent: () =>
+          import(
+            './questions/anwser-questions-form/anwser-questions-form.component'
+          ).then((m) => m.AnwserQuestionsFormComponent),
       },
     ],
   },
