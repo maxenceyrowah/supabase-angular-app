@@ -57,6 +57,7 @@ export class SettingsComponent {
 
     const dataForm = {
       ...entryData,
+      status: 'unanswered',
       user_id: this.user?.id,
     };
 

@@ -2,16 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { QuestionsService } from 'src/app/@core/services/questions/questions.service';
+import { STATUS } from 'src/app/@core/models/status';
 
-enum StatusQuestion {
-  'in_progress' = 'En cours',
-  'done' = 'Valider',
-}
-
-const STATUS: { [k: string]: string } = {
-  in_progress: 'En cours',
-  done: 'Complete',
-};
 @Component({
   selector: 'app-questions-list',
   standalone: true,
@@ -38,7 +30,7 @@ export class QuestionsListComponent implements OnInit {
       });
   }
 
-  getStatutOfQuestions(status: StatusQuestion) {
+  translateStatus(status: string) {
     return STATUS[`${status}`];
   }
 }

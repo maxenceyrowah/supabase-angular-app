@@ -31,6 +31,13 @@ export class AnwserService {
       .eq('question_id', questionId);
   }
 
+  // async getCheckIfQuestionHaveOneQanwser() {
+  //   return await this.supabaseInstance.supabase
+  //     .from('answers')
+  //     .select('question_id', )
+  //     .eq('question_id', questionId);
+  // }
+
   async getAnwsers() {
     return await this.supabaseInstance.supabase.from('answers').select('*');
   }
