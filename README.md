@@ -10,6 +10,7 @@ Pour pouvoir démarrer le projet, vous devez d'abord :
 
 Install le Supabase CLI
 Sur Mac: `brew install supabase/tap/supabase`
+
 Avec Npm: `npx supabase <command>`
 
 #### 2 - Lancer Supabase
