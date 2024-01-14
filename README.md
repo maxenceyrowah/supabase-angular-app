@@ -2,26 +2,41 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.8.
 
-## Development server
+## Supabase configuration
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Pour pouvoir démarrer le projet, vous devez d'abord :
 
-## Code scaffolding
+#### 1 - Configurer Supabase
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Install le Supabase CLI
+Sur Mac: `brew install supabase/tap/supabase`
+Avec Npm: `npx supabase <command>`
 
-## Build
+#### 2 - Lancer Supabase
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+supabase start
+```
 
-## Running unit tests
+Or
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+npx supabase start
+```
 
-## Running end-to-end tests
+#### 3 - Environment Variables
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Pour lier supabase avec votre client
 
-## Further help
+`SUPABASE_URL`
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+`SUPABASE_ANON_KEY`
+
+### Development server
+
+Lancer `npm run start` or `yarn start`
+
+## Links
+
+- [Supabase configuration Local development](https://supabase.com/docs/guides/cli/local-development)
+- [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started)
