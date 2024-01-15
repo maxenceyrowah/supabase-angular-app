@@ -39,43 +39,75 @@ export class AnwserQuestionsFormComponent implements OnInit {
 
   ngOnInit() {
     this.getSchemaOfQuestion();
-    this.getCurrentUser();
+    this.getUser();
   }
 
   getSchemaOfQuestion() {
-    this.questionService.getQuestion(this.questionId).then((questions) => {
-      this.question = questions;
-      let formGroup: Record<string, any> = {};
-      const currentJsonParseSchema = (questions?.data || []).map((response) => {
-        const currentTransformSchema = JSON.parse(response?.schema);
-        currentTransformSchema['label'] = response?.question;
-
-        return currentTransformSchema;
+    this.anwserService
+      .getQuestionHasAlreadyBeenAnswered(this.questionId)
+      .then((answers) => {
+        const answerValue = answers?.data?.[0];
+        this.buildQuestionFormByAnswer(answerValue);
+      })
+      .catch((error) => {
+        console.log('[getSchemaOfQuestion] error', error);
       });
-      this.formStructure = currentJsonParseSchema;
-      this.formStructure.forEach((control) => {
-        let controlValidators: Validators[] = [];
+  }
+  buildQuestionFormByAnswer(answer: any) {
+    this.questionService
+      .getQuestion(this.questionId)
+      .then((questions) => {
+        this.question = questions;
+        let formGroup: Record<string, any> = {};
 
-        if (control?.validations) {
-          control.validations.forEach(
-            (validation: {
-              name: string;
-              validator: string;
-              message: string;
-            }) => {
-              if (validation.validator === 'required')
-                controlValidators.push(Validators.required);
-              if (validation.validator === 'email')
-                controlValidators.push(Validators.email);
-            }
-          );
-        }
-
-        formGroup[control.name] = [control.value || '', controlValidators];
+        this.formStructure = this.buildSchemaFied(questions, answer);
+        this.buildFormGroup(this.formStructure, formGroup);
+        this.dynamicForm = this.fb.group(formGroup);
+      })
+      .catch((error) => {
+        console.log('[getSchemaOfQuestion] error', error);
       });
+  }
+  buildFormGroup(
+    structureForm: IFormStructure[],
+    formGroup: Record<string, any>
+  ) {
+    return structureForm.forEach((control) => {
+      let controlValidators: Validators[] = [];
 
-      this.dynamicForm = this.fb.group(formGroup);
+      if (control?.validations) {
+        control.validations.forEach(
+          (validation: {
+            name: string;
+            validator: string;
+            message: string;
+          }) => {
+            if (validation.validator === 'required')
+              controlValidators.push(Validators.required);
+            if (validation.validator === 'email')
+              controlValidators.push(Validators.email);
+          }
+        );
+      }
+
+      formGroup[control.name] = [control.value || '', controlValidators];
     });
+  }
+  buildSchemaFied(fields: any, answerValue: any) {
+    return (fields?.data || []).map(
+      (field: {
+        schema: string;
+        answer: Record<any, any>;
+        question: string;
+      }) => {
+        const schemaField = JSON.parse(field?.schema);
+        schemaField['label'] = field?.question;
+        schemaField['value'] =
+          answerValue?.answer?.[`${schemaField?.name}`] || '';
+
+        return schemaField;
+      }
+    );
   }
   getErrorMessage(control: any) {
     const formControl = this.dynamicForm.get(control.name);
@@ -92,7 +124,7 @@ export class AnwserQuestionsFormComponent implements OnInit {
 
     return '';
   }
-  getCurrentUser() {
+  getUser() {
     this.userService
       .getUser()
       .then((response) => {
@@ -102,8 +134,7 @@ export class AnwserQuestionsFormComponent implements OnInit {
         console.log('[] error', error);
       });
   }
-
-  async save() {
+  save() {
     if (!this.dynamicForm.valid) {
       this.dynamicForm.markAllAsTouched();
       return;
@@ -135,7 +166,7 @@ export class AnwserQuestionsFormComponent implements OnInit {
       .then((folder) => {
         if (folder.data && folder.data.length > 0) {
           this.folderId = folder?.data?.[0].folder_id;
-          this.createAnwsers(content);
+          this.createAnwser(content);
         } else {
           this.createFolder(content);
         }
@@ -151,11 +182,11 @@ export class AnwserQuestionsFormComponent implements OnInit {
       })
       .then((res) => {
         this.folderId = res?.data?.[0].folder_id;
-        this.createAnwsers(content);
+        this.createAnwser(content);
       })
       .catch((error) => {});
   }
-  createAnwsers(content: any) {
+  createAnwser(content: any) {
     const dataform = content;
     dataform['folder_id'] = this.folderId;
     this.anwserService
