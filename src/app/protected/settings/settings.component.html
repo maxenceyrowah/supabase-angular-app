@@ -10,34 +10,358 @@
       </div>
 
       <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
-        <form [formGroup]="questionForm">
+        <form [formGroup]="questionForm" (ngSubmit)="registerQuestion()">
           <div class="flex flex-wrap">
+            <!-- QUESTION TYPE -->
             <div class="w-full lg:w-12/12 px-4">
-              <div class="relative w-full mb-3 mt-2">
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                  Question
-                </label>
-                <input type="text" placeholder="Veuillez entrer votre question" formControlName='question'
-                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+              <div class="flex items-baseline">
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mt-2 mb-3">
+                    <label for="question_type" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Type de
+                      la
+                      question
+                      <span class="text-red-500">*</span>
+                    </label>
+                    <select formControlName="question_type" id="question_type" class="block w-full py-3 px-1 mt-2
+                text-gray-800
+                border-2 border-gray-100 bg-white rounded
+                focus:text-gray-500 focus:outline-none focus:border-gray-200">
+                      <option disabled selected value="">Veuillez selectionner le type de la question</option>
+                      <option value="personal">Questions personnelles</option>
+                      <option value="strategic">Questions stratégiques</option>
+                    </select>
+                  </div>
+                  <span class="text-red-500 italic text-sm"
+                    *ngIf="questionForm.controls?.['question_type']?.touched && questionForm.controls?.['question_type']?.errors?.['required']">Veuillez
+                    completer
+                    ce champ</span>
+                </div>
+
+                <!-- QUESTION -->
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mt-2 mb-3">
+                    <label for="question" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      htmlfor="grid-password">
+                      Question
+                      <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" placeholder="Veuillez entrer votre question" formControlName='question'
+                      id="question"
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  </div>
+                  <span class="text-red-500 italic text-sm"
+                    *ngIf="questionForm.controls?.['question']?.touched && questionForm.controls?.['question']?.errors?.['required']">Veuillez
+                    completer
+                    ce champ</span>
+                </div>
               </div>
             </div>
 
+            <!-- SCHEMA DE VALIDATION DES REPONSES -->
             <div class="w-full lg:w-12/12 px-4">
+              <div class="flex items-center justify-between mt-2">
+                <div>
+                  <h1 class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Schema de validation des reponses
+                  </h1>
+                </div>
+                <button (click)="addSchema()" type="button"
+                  class="py-2 px-5
+                  font-medium uppercase
+                  focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200 disabled:bg-gray-400 disabled:text-gray-500">
+                  +
+                </button>
+              </div>
+
+              <!-- SCHEMA SECTION -->
               <div class="relative w-full mb-3">
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                  Schema de validation
-                </label>
-                <textarea type="text" placeholder="saisir votre validateur ici..." formControlName='schema' rows="10"
-                  cols="5"
-                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
-                </textarea>
+                <div formArrayName="schemas">
+                  <div *ngFor="let schema of schemas.controls; let i = index;" formGroupName="{{i}}">
+                    <div class="flex items-baseline">
+                      <!-- TYPE DE L'INPUT -->
+                      <div class="w-full lg:w-4/12 px-4">
+                        <div class="relative w-full mb-3">
+                          <label for="type-{{i}}" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Type
+                            <span class="text-red-500">*</span>
+                          </label>
+                          <select formControlName="type" id="type-{{i}}" class="block w-full py-3 px-1 mt-2
+                      text-gray-800
+                      border-2 border-gray-100 bg-white rounded
+                      focus:text-gray-500 focus:outline-none focus:border-gray-200">
+                            <option disabled selected value="">Veuillez selectionner le type du champ</option>
+                            <option value="text">Texte</option>
+                            <option value="select">Select</option>
+                            <option value="email">Email</option>
+                            <option value="number">Number</option>
+                            <option value="radio">Radio</option>
+                            <option value="textarea">Textarea</option>
+                          </select>
+                        </div>
+                        <span span class="text-red-500 italic text-sm"
+                          *ngIf="schemas.controls[i].get('type')?.touched && schemas.controls[i].get('type')?.errors?.['required']">
+                          Veuillez
+                          completer
+                          ce champ
+                        </span>
+                      </div>
+
+                      <!-- NOM DU CHAMP -->
+                      <div class="w-full lg:w-4/12 px-4">
+                        <div class="relative w-full mb-3">
+                          <label for="field_name-{{i}}"
+                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Name
+                            <span class="text-red-500">*</span>
+                          </label>
+                          <input type="text" id="field_name-{{i}}" placeholder="Veuillez entrer le nom du champ"
+                            formControlName='field_name'
+                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                        </div>
+
+                        <span span class="text-red-500 italic text-sm"
+                          *ngIf="schemas.controls[i].get('field_name')?.touched && schemas.controls[i].get('field_name')?.errors?.['required']">
+                          Veuillez
+                          completer
+                          ce champ
+                        </span>
+                      </div>
+
+                      <!-- VALEUR PAR DEFAULT -->
+                      <div class="w-full lg:w-4/12">
+                        <div class="flex items-center">
+                          <div class="w-full lg:w-10/12">
+                            <div class="relative w-full mb-3">
+                              <label for="value-{{i}}"
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Value
+                                par
+                                defaut</label>
+                              <input type="text" id="value-{{i}}" placeholder="Veuillez entrer la valeur par defaut"
+                                formControlName='value'
+                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                            </div>
+                          </div>
+
+                          <div class="w-full lg:w-2/12 px-4" *ngIf="i > 0">
+                            <div class="text-end">
+                              <button type="button" (click)="removeSchema(i)" class="py-2 px-5
+                            font-medium uppercase
+                            focus:outline-none  hover:shadow-none  bg-red-500 text-white rounded-md hover:bg-red-600">
+                                -
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- TYPE_FIELD = ['text', 'email', 'number', 'textarea']; -->
+                    <div *ngIf="TYPE_FIELD.includes(schema.get('type')?.value)">
+                      <div class="relative w-full text-end">
+                        <button type="button" (click)="addValidation(i)"
+                          class="py-2 px-5
+                      font-medium uppercase
+                      focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200 disabled:bg-gray-400 disabled:text-gray-500">Add
+                          Validation</button>
+                      </div>
+
+                      <!-- validation section -->
+                      <div formArrayName="validations">
+                        <div class="flex" *ngFor="let validation of getValidations?.(i)?.controls; let vIndex = index"
+                          formGroupName="{{vIndex}}">
+                          <div class="w-full lg:w-4/12 px-4">
+                            <div class="relative w-full mb-3">
+                              <label for="required-{{vIndex}}"
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Champ Requis
+                                <span class="text-red-500">*</span>
+                              </label>
+                              <select formControlName="required" id="required-{{vIndex}}" class="block w-full py-3 px-1 mt-2
+                        text-gray-800
+                        border-2 border-gray-100 bg-white rounded
+                        focus:text-gray-500 focus:outline-none focus:border-gray-200">
+                                <option disabled selected value="">Veuillez selectionner une option</option>
+                                <option value="true">Oui</option>
+                                <option value="false">Non</option>
+                              </select>
+                            </div>
+                            <span class="text-red-500 italic text-sm"
+                              *ngIf="getValidations(i).controls[vIndex].get('required')?.touched && getValidations(i).controls[vIndex].get('required')?.errors?.['required']">
+                              Veuillez
+                              completer
+                              ce champ
+                            </span>
+                          </div>
+
+                          <div class="w-full lg:w-8/12 px-4">
+                            <div class="flex items-center">
+                              <div class="w-full lg:w-10/12">
+                                <div class="relative w-full mb-3">
+                                  <label for="message-{{vIndex}}"
+                                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Message
+                                    d'erreur
+                                  </label>
+                                  <input type="text" id="message-{{vIndex}}"
+                                    placeholder="Veuillez entrer votre message d'erreur" formControlName='message'
+                                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                                </div>
+                              </div>
+
+                              <div class="w-full lg:w-2/12 px-4">
+                                <div class="text-end">
+                                  <button type="button" (click)="removeValidation(i, vIndex)"
+                                    class="py-2 px-5
+                                  font-medium uppercase
+                                  focus:outline-none  hover:shadow-none  bg-red-500 text-white rounded-md hover:bg-red-600">
+                                    -
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- TYPE_SELECT = ['select', 'radio']; -->
+                    <div *ngIf="TYPE_SELECT.includes(schema.get('type')?.value)">
+                      <div class="w-full lg:w-12/12 px-4 mt-2">
+                        <div class="relative w-full text-end">
+                          <button (click)="addOption(i)" type="button"
+                            class="py-2 px-5 mr-2
+                        font-medium uppercase
+                        focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200 disabled:bg-gray-400 disabled:text-gray-500">Add
+                            option</button>
+
+                          <button type="button" (click)="addValidation(i)"
+                            class="py-2 px-5
+                        font-medium uppercase
+                        focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200 disabled:bg-gray-400 disabled:text-gray-500">Add
+                            Validation</button>
+                        </div>
+
+                        <!-- option of select, radio-->
+                        <div formArrayName="options">
+                          <div class="flex" *ngFor="let option of getOptons?.(i)?.controls; let j = index"
+                            formGroupName="{{j}}">
+                            <div class="w-full lg:w-6/12 px-4">
+                              <div class="relative w-full mb-3">
+                                <label for="label-{{j}}"
+                                  class="block uppercase text-blueGray-600 text-xs font-bold mb-2">label
+                                  <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="label-{{j}}" placeholder="Veuillez entrer le label"
+                                  formControlName='label'
+                                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                              </div>
+                              <span class="text-red-500 italic text-sm"
+                                *ngIf="getOptons(i).controls[j].get('label')?.touched && getOptons(i).controls[j].get('label')?.errors?.['required']">
+                                Veuillez
+                                completer
+                                ce champ
+                              </span>
+                            </div>
+
+                            <div class="w-full lg:w-6/12 px-4">
+                              <div class="flex items-center">
+                                <div class="w-full lg:w-10/12">
+                                  <div class="relative w-full mb-3">
+                                    <label for="value-{{j}}"
+                                      class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Value
+                                      <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="value-{{j}}" placeholder="Veuillez entrer la value"
+                                      formControlName='value'
+                                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                                  </div>
+                                  <span class="text-red-500 italic text-sm"
+                                    *ngIf="getOptons(i).controls[j].get('value')?.touched && getOptons(i).controls[j].get('value')?.errors?.['required']">
+                                    Veuillez
+                                    completer
+                                    ce champ
+                                  </span>
+                                </div>
+
+                                <div class="w-full lg:w-2/12">
+                                  <div class="w-full lg:w-4/12 px-4" *ngIf="j > 0">
+                                    <div class="text-end">
+                                      <button type="button" (click)="removeOption(i, j)"
+                                        class="py-2 px-5
+                                    font-medium uppercase
+                                    focus:outline-none  hover:shadow-none  bg-red-500 text-white rounded-md hover:bg-red-600">
+                                        -
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- validation section -->
+                        <div formArrayName="validations">
+                          <div class="flex mt-2"
+                            *ngFor="let validation of getValidations?.(i)?.controls; let vIndex = index"
+                            formGroupName="{{vIndex}}">
+                            <div class="w-full lg:w-4/12 px-4">
+                              <div class="relative w-full mb-3">
+                                <label for="required-{{vIndex}}"
+                                  class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Champ Requis
+                                  <span class="text-red-500">*</span>
+                                </label>
+                                <select formControlName="required" id="required-{{vIndex}}" class="block w-full py-3 px-1 mt-2
+                          text-gray-800
+                          border-2 border-gray-100 bg-white rounded
+                          focus:text-gray-500 focus:outline-none focus:border-gray-200">
+                                  <option disabled selected value="">Veuillez selectionner une option</option>
+                                  <option value="true">Oui</option>
+                                  <option value="false">Non</option>
+                                </select>
+                              </div>
+                              <span class="text-red-500 italic text-sm"
+                                *ngIf="getValidations(i).controls[vIndex].get('required')?.touched && getValidations(i).controls[vIndex].get('required')?.errors?.['required']">
+                                Veuillez
+                                completer
+                                ce champ
+                              </span>
+                            </div>
+
+                            <div class="w-full lg:w-8/12 px-4">
+                              <div class="flex items-center">
+                                <div class="w-full lg:w-10/12">
+                                  <div class="relative w-full mb-3">
+                                    <label for="message-{{vIndex}}"
+                                      class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Message
+                                      d'erreur
+                                    </label>
+                                    <input type="text" id="message-{{vIndex}}"
+                                      placeholder="Veuillez entrer votre message d'erreur" formControlName='message'
+                                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                                  </div>
+                                </div>
+
+                                <div class="w-full lg:w-2/12 px-4">
+                                  <div class="text-end">
+                                    <button type="button" (click)="removeValidation(i, vIndex)"
+                                      class="py-2 px-5
+                                    font-medium uppercase
+                                    focus:outline-none  hover:shadow-none  bg-red-500 text-white rounded-md hover:bg-red-600">
+                                      -
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="flex flex-wrap items-center text-center">
             <div class="lg:w-12/12 px-4">
-              <button type="submit" (click)="registerQuestion()" [disabled]="!questionForm.valid"
+              <button type="submit"
                 class="w-full py-3 mt-10 px-5
               font-medium uppercase
               focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200 disabled:bg-gray-400 disabled:text-gray-500">
@@ -69,7 +393,7 @@
 
               <th align="left"
                 class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                Schema</th>
+                Schemas</th>
 
               <th align="center"
                 class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
@@ -88,7 +412,7 @@
 
               <td align="left"
                 class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
-                {{ question.schema }}
+                {{ question.schemas | json }}
               </td>
 
               <td align="center"

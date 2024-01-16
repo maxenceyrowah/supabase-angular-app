@@ -32,12 +32,6 @@ export const ProtectedRoutes: Routes = [
           ),
       },
       {
-        path: 'quiz',
-        canMatch: [() => !inject(UsersService).isAdmin],
-        loadComponent: () =>
-          import('./quiz/quiz.component').then((m) => m.QuizComponent),
-      },
-      {
         path: 'questions',
         canMatch: [() => !inject(UsersService).isAdmin],
         loadComponent: () =>
