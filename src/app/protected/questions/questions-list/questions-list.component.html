@@ -1,0 +1,88 @@
+<div class="w-full lg:w-10/12 px-4 mx-auto mt-6 flex flex-col gap-5">
+  <div class="text-right">
+    <!-- <a routerLink="/dashboard/questions/anwser-questions">
+      <button class="text-center mr-5 py-3 px-5
+    font-medium uppercase
+    focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">Répondre aux
+        questions</button>
+    </a> -->
+
+    <a routerLink="/dashboard/home">
+      <button
+        class="text-center py-3 px-5
+    font-medium uppercase
+    focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">Précèdent</button>
+    </a>
+  </div>
+
+  <div class=" relative min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
+    <div class="rounded-t bg-white mb-0 px-6 py-6">
+      <div class="text-center flex justify-between">
+        <h6 class="text-blueGray-700 text-xl font-bold">
+          Liste des questions
+        </h6>
+      </div>
+    </div>
+
+    <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+      <table class="border-collapse w-full">
+        <thead>
+          <tr>
+            <th align="left"
+              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Question</th>
+
+            <th align="center"
+              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Status</th>
+
+            <th align="center"
+              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Actions</th>
+        </thead>
+
+        <tbody>
+          <tr
+            class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0"
+            *ngFor="let question of questions">
+            <td align="left"
+              class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
+              {{ question.question }}
+            </td>
+
+            <td align="center"
+              class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
+
+              <div *ngIf="question.status === 'answered';else other_response">
+                <span
+                  class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                  {{ translateStatus(question.status) }}
+                </span>
+              </div>
+
+              <ng-template #other_response>
+                <span
+                  class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
+                  {{ translateStatus(question.status)}}
+                </span>
+              </ng-template>
+            </td>
+
+            <td align="center"
+              class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
+              <a [routerLink]="['/dashboard/questions', question.id, 'anwser']">
+                <button class="text-center py-2 px-5
+              font-medium uppercase
+              focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">
+                  <span *ngIf="question.status === 'answered';else repondre">Editer</span>
+                  <ng-template #repondre>Répondre</ng-template>
+                </button>
+              </a>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

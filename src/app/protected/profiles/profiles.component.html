@@ -1,0 +1,127 @@
+<section class=" py-1 bg-blueGray-50">
+  <div class="w-full lg:w-10/12 px-4 mx-auto mt-6">
+    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
+      <div class="rounded-t bg-white mb-0 px-6 py-6">
+        <div class="text-center flex justify-between">
+          <h6 class="text-blueGray-700 text-xl font-bold">
+            Mon profil
+          </h6>
+        </div>
+      </div>
+
+      <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+        <form [formGroup]="profilForm">
+          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+            User Information
+          </h6>
+          <div class="flex flex-wrap">
+            <div class="w-full lg:w-12/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Email
+                </label>
+                <input type="email"
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  placeholder="contact@example.com" formControlName='email'>
+              </div>
+            </div>
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Nom
+                </label>
+                <input type="text" placeholder="saisir votre nom" formControlName='first_name'
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+              </div>
+            </div>
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Prénoms
+                </label>
+                <input type="text" placeholder="Saisir votre prénoms" formControlName='last_name'
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+              </div>
+            </div>
+          </div>
+
+          <hr class="mt-6 border-b-1 border-blueGray-300">
+
+          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+            Contact Information
+          </h6>
+          <div class="flex flex-wrap">
+            <div class="w-full lg:w-12/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Date d'anniversaire
+                </label>
+                <input type="date" formControlName='birthday'
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+              </div>
+            </div>
+            <div class="w-full lg:w-4/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Ville
+                </label>
+                <select formControlName="city" id="city" class="block w-full py-3 px-1 mt-2
+                text-gray-800
+                border-b-2 border-gray-100
+                focus:text-gray-500 focus:outline-none focus:border-gray-200">
+                  <option disabled selected hidden value="">Veuillez selectionner une ville</option>
+                  <option value="Abidjan">ABIDJAN</option>
+                  <option value="Bouake">BOUAKE</option>
+                </select>
+              </div>
+            </div>
+            <div class="w-full lg:w-4/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Commune
+                </label>
+                <select formControlName="municipality" id="municipality" class="block w-full py-3 px-1 mt-2
+                  text-gray-800
+                  border-b-2 border-gray-100
+                  focus:text-gray-500 focus:outline-none focus:border-gray-200">
+                  <option disabled selected hidden value="">Veuillez selectionner votre commune</option>
+                  <option value="Yopougon">YOPOUGON</option>
+                  <option value="Cocody">COCODY</option>
+                </select>
+              </div>
+            </div>
+            <div class="w-full lg:w-4/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Sexe
+                </label>
+                <select formControlName="gender" id="gender" class="block w-full py-3 px-1 mt-2
+                text-gray-800
+                border-b-2 border-gray-100
+                focus:text-gray-500 focus:outline-none focus:border-gray-200">
+                  <option disabled selected hidden value="">Veuillez selectionner le sexe</option>
+                  <option value="M">M</option>
+                  <option value="F">F</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <hr class="mt-6 border-b-1 border-blueGray-300">
+
+          <div class="flex flex-wrap items-center text-center">
+            <div class="lg:w-12/12 px-4">
+              <button type="submit"
+                class="w-full py-3 mt-10 px-5
+              font-medium uppercase
+              focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200 disabled:bg-gray-400 disabled:text-gray-500"
+                (click)="updateUser()" [disabled]="loading">
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

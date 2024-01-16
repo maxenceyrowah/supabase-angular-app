@@ -1,0 +1,78 @@
+<div class="w-full lg:w-10/12 px-4 mx-auto mt-6 flex flex-col gap-5">
+
+  <div *appIfAdmin>
+    Home component !!!
+  </div>
+
+  <div *appIfAuth>
+    <div class="text-right">
+      <a routerLink="/dashboard/questions">
+        <button class="w-48 text-center py-3 mt-10 px-5
+  font-medium uppercase
+  focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">
+          Déposer une idée
+        </button>
+      </a>
+    </div>
+
+    <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+      <h1 class="text-xl mt-5 mb-2 uppercase text-indigo-600">Liste des idés</h1>
+      <table class="border-collapse w-full">
+        <thead>
+          <tr>
+            <th align="left"
+              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              libelle</th>
+
+            <th align="center"
+              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Status</th>
+
+            <th align="center"
+              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Actions</th>
+        </thead>
+
+        <tbody>
+          <tr
+            class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0"
+            *ngFor="let folder of folders">
+
+            <td align="left"
+              class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
+              {{ folder.libelle }}
+            </td>
+
+            <td align="center"
+              class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
+              <span
+                class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
+                {{ getStatutOffolder(folder.status) }}
+              </span>
+            </td>
+
+            <td align="center"
+              class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
+
+              <div *ngIf="folder.status === 'in_progress';else condition">
+                <a [routerLink]="['/dashboard/questions']">
+                  <button
+                    class="text-center py-2 px-5
+              font-medium uppercase
+              focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">continuer</button>
+                </a>
+              </div>
+
+              <ng-template #condition>
+                <button
+                  class="text-center py-2 px-5
+              font-medium uppercase
+              focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">Valider</button>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
