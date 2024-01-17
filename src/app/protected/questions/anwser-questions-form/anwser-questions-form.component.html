@@ -20,7 +20,7 @@
                 {{ control.label }}
                 <div *ngIf="control?.validations?.length">
                   <div *ngFor="let validator of control.validations">
-                    <span *ngIf="validator?.name === 'required'" class="text-red-500">*</span>
+                    <!-- <span *ngIf="validator?.name === 'required'" class="text-red-500">*</span> -->
                   </div>
                 </div>
               </label>
@@ -53,7 +53,7 @@
 
                   <div *ngIf="control?.validations?.length">
                     <div *ngFor="let validator of control.validations">
-                      <span *ngIf="validator?.name === 'required'" class="text-red-500">*</span>
+                      <!-- <span *ngIf="validator?.name === 'required'" class="text-red-500">*</span> -->
                     </div>
                   </div>
                 </label>
@@ -73,7 +73,7 @@
 
                 <div *ngIf="control?.validations?.length">
                   <div *ngFor="let validator of control.validations">
-                    <span *ngIf="validator?.name === 'required'" class="text-red-500">*</span>
+                    <!-- <span *ngIf="validator?.name === 'required'" class="text-red-500">*</span> -->
                   </div>
                 </div>
               </label>
@@ -97,7 +97,7 @@
           </div>
         </div>
 
-        <button type="submit" [disabled]="!dynamicForm.valid"
+        <button type="submit"
           class="px-10 mr-2 py-3 mt-10
         font-medium uppercase
         focus:outline-none hover:shadow-none bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200 disabled:bg-gray-200 disabled:text-gray-400">Enregistrer</button>

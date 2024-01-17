@@ -5,8 +5,7 @@ export interface IFormStructure {
   value: string | number | boolean;
   options?: { label: string; value: number | string | boolean }[];
   validations?: {
-    name: string;
-    validator: string;
+    required: string;
     message: string;
   }[];
 }

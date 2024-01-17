@@ -77,15 +77,11 @@ export class AnwserQuestionsFormComponent implements OnInit {
 
       if (control?.validations) {
         control.validations.forEach(
-          (validation: {
-            name: string;
-            validator: string;
-            message: string;
-          }) => {
-            if (validation.validator === 'required')
+          (validation: { required: string; message: string }) => {
+            if (Boolean(validation.required) === true)
               controlValidators.push(Validators.required);
-            if (validation.validator === 'email')
-              controlValidators.push(Validators.email);
+            // if (validation.validator === 'email')
+            //   controlValidators.push(Validators.email);
           }
         );
       }
@@ -96,14 +92,15 @@ export class AnwserQuestionsFormComponent implements OnInit {
   buildSchemaFied(fields: any, answerValue: any) {
     return (fields?.data || []).map(
       (field: {
-        schema: string;
+        schemas: Record<any, any>;
         answer: Record<any, any>;
         question: string;
       }) => {
-        const schemaField = JSON.parse(field?.schema);
+        const schemaField = field?.schemas?.[0];
+
         schemaField['label'] = field?.question;
         schemaField['value'] =
-          answerValue?.answer?.[`${schemaField?.name}`] || '';
+          answerValue?.answer?.[`${schemaField?.['name']}`] || '';
 
         return schemaField;
       }
