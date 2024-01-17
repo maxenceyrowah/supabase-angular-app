@@ -76,7 +76,7 @@
               <div class="relative w-full mb-3">
                 <div formArrayName="schemas">
                   <div *ngFor="let schema of schemas.controls; let i = index;" formGroupName="{{i}}">
-                    <div class="flex items-baseline">
+                    <div class="flex items-baseline mt-10">
                       <!-- TYPE DE L'INPUT -->
                       <div class="w-full lg:w-4/12 px-4">
                         <div class="relative w-full mb-3">
@@ -393,6 +393,10 @@
 
               <th align="left"
                 class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                Categories</th>
+
+              <th align="left"
+                class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
                 Schemas</th>
 
               <th align="center"
@@ -408,6 +412,11 @@
               <td align="left"
                 class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
                 {{ question.question }}
+              </td>
+
+              <td align="center"
+                class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
+                {{ question.question_type }}
               </td>
 
               <td align="left"
