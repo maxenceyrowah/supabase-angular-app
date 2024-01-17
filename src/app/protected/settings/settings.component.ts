@@ -51,37 +51,40 @@ export class SettingsComponent implements OnInit {
       ]),
     });
 
-    this.watchTypeChanges();
+    this.setDefaultOptionWhenSelectTypeChanges();
   }
 
-  watchTypeChanges() {
+  setDefaultOptionWhenSelectTypeChanges() {
     const schemasArray = this.questionForm.get('schemas') as FormArray;
-    schemasArray
-      .at(0)
-      .get('type')
-      ?.valueChanges.subscribe((type: string) => {
-        const optionsArray = schemasArray.at(0).get('options') as FormArray;
-        const validationsArray = schemasArray
-          .at(0)
-          .get('validations') as FormArray;
 
-        while (optionsArray.length) {
-          optionsArray.removeAt(0);
-        }
+    if (!schemasArray) {
+      return;
+    }
+    schemasArray.valueChanges.subscribe((schemas) => {
+      schemas.forEach((schema: any, sIndex: any) => {
+        if (schemasArray.at(sIndex)) {
+          const optionsArray = schemasArray
+            .at(sIndex)
+            .get('options') as FormArray;
 
-        while (validationsArray.length) {
-          validationsArray.removeAt(0);
-        }
-
-        if (type === 'select' || type === 'radio') {
-          optionsArray.push(
-            this.fb.group({
-              label: ['', Validators.required],
-              value: ['', Validators.required],
-            })
-          );
+          if (schema.type === 'select' || schema.type === 'radio') {
+            if (optionsArray && optionsArray.length === 0) {
+              const newOption = this.fb.group({
+                label: ['', Validators.required],
+                value: ['', Validators.required],
+              });
+              optionsArray.push(newOption);
+            }
+          } else {
+            optionsArray.clear();
+          }
         }
       });
+
+      this.questionForm
+        .get('schemas')
+        ?.patchValue(schemas, { emitEvent: false });
+    });
   }
 
   getUser() {
