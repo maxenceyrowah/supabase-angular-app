@@ -17,22 +17,21 @@
               <div class="flex items-baseline">
                 <div class="w-full lg:w-6/12 px-4">
                   <div class="relative w-full mt-2 mb-3">
-                    <label for="question_type" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Type de
+                    <label for="category_id" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Type de
                       la
                       question
                       <span class="text-red-500">*</span>
                     </label>
-                    <select formControlName="question_type" id="question_type" class="block w-full py-3 px-1 mt-2
+                    <select formControlName="category_id" id="category_id" class="block w-full py-3 px-1 mt-2
                 text-gray-800
                 border-2 border-gray-100 bg-white rounded
                 focus:text-gray-500 focus:outline-none focus:border-gray-200">
                       <option disabled selected value="">Veuillez selectionner le type de la question</option>
-                      <option value="personal">Questions personnelles</option>
-                      <option value="strategic">Questions stratégiques</option>
+                      <option *ngFor="let category of categories" [value]="category.id">{{ category.label }}</option>
                     </select>
                   </div>
                   <span class="text-red-500 italic text-sm"
-                    *ngIf="questionForm.controls?.['question_type']?.touched && questionForm.controls?.['question_type']?.errors?.['required']">Veuillez
+                    *ngIf="questionForm.controls?.['category_id']?.touched && questionForm.controls?.['category_id']?.errors?.['required']">Veuillez
                     completer
                     ce champ</span>
                 </div>
@@ -373,68 +372,6 @@
       </div>
     </div>
 
-    <div class="relative min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
-      <div class="rounded-t bg-white mb-0 px-6 py-6">
-        <div class="text-center flex justify-between">
-          <h6 class="text-blueGray-700 text-xl font-bold">
-            Liste des questions
-          </h6>
-        </div>
-      </div>
-
-      <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
-
-        <table class="border-collapse w-full">
-          <thead>
-            <tr>
-              <th align="left"
-                class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                Question</th>
-
-              <th align="left"
-                class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                Categories</th>
-
-              <th align="left"
-                class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                Schemas</th>
-
-              <th align="center"
-                class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr
-              class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0"
-              *ngFor="let question of questions">
-              <td align="left"
-                class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
-                {{ question.question }}
-              </td>
-
-              <td align="center"
-                class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
-                {{ question.question_type }}
-              </td>
-
-              <td align="left"
-                class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
-                {{ question.schemas | json }}
-              </td>
-
-              <td align="center"
-                class="w-full lg:w-auto p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
-                <div>
-                  <button class="bg-indigo-50 text-indigo-600 rounded-md p-2 mr-2 mb-2">Supprimer</button>
-                  <button class="bg-indigo-50 text-indigo-600 rounded-md p-2 mr-2">Modifier</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <app-question-list-view [questions]="questions" (delete)="deleteQuestion($event)" />
   </div>
 </section>

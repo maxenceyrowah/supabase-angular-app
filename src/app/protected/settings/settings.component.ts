@@ -10,11 +10,14 @@ import {
 
 import { QuestionsService } from 'src/app/@core/services/questions/questions.service';
 import { UsersService } from 'src/app/@core/services/users/users.service';
+import { CategoriesService } from 'src/app/@core/services/categories/categories.service';
+import { Category } from 'src/app/@core/models/categories';
+import { QuestionListViewComponent } from './components/question-list-view.component';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, QuestionListViewComponent],
   templateUrl: './settings.component.html',
 })
 export class SettingsComponent implements OnInit {
@@ -23,15 +26,18 @@ export class SettingsComponent implements OnInit {
   questions: any;
   TYPE_FIELD = ['text', 'email', 'number', 'textarea'];
   TYPE_SELECT = ['select', 'radio'];
+  categories: Category[];
 
   constructor(
     private fb: FormBuilder,
     private userService: UsersService,
-    private questionService: QuestionsService
+    private questionService: QuestionsService,
+    private categoriesService: CategoriesService
   ) {}
 
   ngOnInit() {
     this.getUser();
+    this.getCategories();
     this.getQuestions();
     this.initializeForm();
   }
@@ -39,7 +45,7 @@ export class SettingsComponent implements OnInit {
   initializeForm() {
     this.questionForm = this.fb.group({
       question: ['', Validators.required],
-      question_type: ['', Validators.required],
+      category_id: ['', Validators.required],
       schemas: this.fb.array([
         this.fb.group({
           type: ['', Validators.required],
@@ -86,7 +92,6 @@ export class SettingsComponent implements OnInit {
         ?.patchValue(schemas, { emitEvent: false });
     });
   }
-
   getUser() {
     this.userService
       .getUser()
@@ -103,6 +108,14 @@ export class SettingsComponent implements OnInit {
       .then((responses) => {
         this.questions = responses?.data;
       })
+      .catch((error) => {
+        console.log('[] error', error);
+      });
+  }
+  getCategories() {
+    this.categoriesService
+      .getCategories()
+      .then((categories) => (this.categories = categories?.data as Category[]))
       .catch((error) => {
         console.log('[] error', error);
       });
@@ -181,5 +194,16 @@ export class SettingsComponent implements OnInit {
   }
   removeValidation(schemaIndex: number, validationIndex: number) {
     this.getValidations(schemaIndex).removeAt(validationIndex);
+  }
+
+  deleteQuestion(question: any) {
+    this.questionService
+      .deleteQuestion(question.id)
+      .then(() => {
+        this.getQuestions();
+      })
+      .catch((error) => {
+        console.log('[] error', error);
+      });
   }
 }
