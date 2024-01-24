@@ -78,15 +78,15 @@ export class AnwserQuestionsFormComponent implements OnInit {
       if (control?.validations) {
         control.validations.forEach(
           (validation: { required: string; message: string }) => {
-            if (Boolean(validation.required) === true)
+            if (this.requiredField(validation.required))
               controlValidators.push(Validators.required);
-            // if (validation.validator === 'email')
-            //   controlValidators.push(Validators.email);
+            if (control.type === 'email')
+              controlValidators.push(Validators.email);
           }
         );
       }
 
-      formGroup[control.name] = [control.value || '', controlValidators];
+      formGroup[control.field_name] = [control.value || '', controlValidators];
     });
   }
   buildSchemaFied(fields: any, answerValue: any) {
@@ -100,21 +100,21 @@ export class AnwserQuestionsFormComponent implements OnInit {
 
         schemaField['label'] = field?.question;
         schemaField['value'] =
-          answerValue?.answer?.[`${schemaField?.['name']}`] || '';
+          answerValue?.answer?.[`${schemaField?.['field_name']}`] || '';
 
         return schemaField;
       }
     );
   }
   getErrorMessage(control: any) {
-    const formControl = this.dynamicForm.get(control.name);
+    const formControl = this.dynamicForm.get(control.field_name);
 
     if (!formControl) {
       return '';
     }
 
     for (let validation of control.validations) {
-      if (formControl.hasError(validation.name)) {
+      if (this.requiredField(validation.required)) {
         return validation.message;
       }
     }
@@ -132,8 +132,9 @@ export class AnwserQuestionsFormComponent implements OnInit {
       });
   }
   save() {
+    this.dynamicForm.markAllAsTouched();
+
     if (!this.dynamicForm.valid) {
-      this.dynamicForm.markAllAsTouched();
       return;
     }
 
@@ -174,7 +175,7 @@ export class AnwserQuestionsFormComponent implements OnInit {
     this.folderService
       .postFolder({
         status: 'in_progress',
-        libelle: 'Idee-001',
+        libelle: `Idee-${Math.random()}`,
         user_id: this.user.id,
       })
       .then((res) => {
@@ -209,5 +210,8 @@ export class AnwserQuestionsFormComponent implements OnInit {
         }
       })
       .catch((error) => {});
+  }
+  requiredField(validation: string | undefined) {
+    return Boolean(validation);
   }
 }

@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { Directive, OnInit, inject } from '@angular/core';
-import { SupabaseService } from '../services/supabase/supabase.service';
-import { UsersService } from '../services/users/users.service';
+import { SupabaseService } from '../../@core/services/supabase/supabase.service';
+import { UsersService } from '../../@core/services/users/users.service';
 
 @Directive({
   selector: '[appIfAuth]',

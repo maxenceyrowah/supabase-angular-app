@@ -29,7 +29,8 @@ export class UsersService {
 
   get isAdmin() {
     const userConnected = this.supabaseInstance.getLocalStorage;
-    const roleOfUserConnected = userConnected['user']['user_metadata'].profile;
+    const roleOfUserConnected =
+      userConnected?.['user']?.['user_metadata'].profile;
     return this.roles.includes(roleOfUserConnected);
   }
 }

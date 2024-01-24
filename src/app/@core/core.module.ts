@@ -6,6 +6,7 @@ import { UsersService } from './services/users/users.service';
 import { QuestionsService } from './services/questions/questions.service';
 import { FoldersService } from './services/folders/folders.service';
 import { AnwserService } from './services/anwser/anwser.service';
+import { CategoriesService } from './services/categories/categories.service';
 
 @NgModule({
   declarations: [],
@@ -16,6 +17,7 @@ import { AnwserService } from './services/anwser/anwser.service';
     QuestionsService,
     FoldersService,
     AnwserService,
+    CategoriesService,
   ],
 })
 export class CoreModule {}

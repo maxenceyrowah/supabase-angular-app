@@ -20,7 +20,7 @@
                 {{ control.label }}
                 <div *ngIf="control?.validations?.length">
                   <div *ngFor="let validator of control.validations">
-                    <!-- <span *ngIf="validator?.name === 'required'" class="text-red-500">*</span> -->
+                    <span *ngIf="requiredField(validator?.required)" class="text-red-500">*</span>
                   </div>
                 </div>
               </label>
@@ -28,18 +28,18 @@
               <input [type]="control.type" class="block w-full py-3 px-1 mt-2 mb-4
               text-gray-800 appearance-none
               border-b-2
-              focus:text-gray-500 focus:outline-none focus:border-gray-200" [formControlName]="control.name"
+              focus:text-gray-500 focus:outline-none focus:border-gray-200" [formControlName]="control.field_name"
                 *ngIf="control.type !== 'textarea'" />
 
               <textarea rows="10" class="block w-full py-3 px-1 mt-2 mb-4
                 text-gray-800 appearance-none
                 border-b-2 border-gray-100
-                focus:text-gray-500 focus:outline-none focus:border-gray-200" [formControlName]="control.name"
+                focus:text-gray-500 focus:outline-none focus:border-gray-200" [formControlName]="control.field_name"
                 *ngIf="control.type === 'textarea'">
               </textarea>
               <span class="text-red-500 text-xs italic" *ngIf="
-                  dynamicForm.controls[control.name]?.invalid &&
-                  dynamicForm.controls[control.name]?.touched
+                  dynamicForm.controls[control.field_name]?.invalid &&
+                  dynamicForm.controls[control.field_name]?.touched
                 ">
                 {{ getErrorMessage(control) }}
               </span>
@@ -53,13 +53,13 @@
 
                   <div *ngIf="control?.validations?.length">
                     <div *ngFor="let validator of control.validations">
-                      <!-- <span *ngIf="validator?.name === 'required'" class="text-red-500">*</span> -->
+                      <span *ngIf="requiredField(validator?.required)" class="text-red-500">*</span>
                     </div>
                   </div>
                 </label>
               </div>
               <div class="form-check form-check-inline" *ngFor="let option of control.options">
-                <input class="form-check-input cursor-pointer" type="radio" [formControlName]="control.name"
+                <input class="form-check-input cursor-pointer" type="radio" [formControlName]="control.field_name"
                   id="inlineRadio1" [value]="option.value" />
                 <label class="form-check-label" for="inlineRadio1">
                   {{ option.label }}</label>
@@ -73,7 +73,7 @@
 
                 <div *ngIf="control?.validations?.length">
                   <div *ngFor="let validator of control.validations">
-                    <!-- <span *ngIf="validator?.name === 'required'" class="text-red-500">*</span> -->
+                    <span *ngIf="requiredField(validator?.required)" class="text-red-500">*</span>
                   </div>
                 </div>
               </label>
@@ -81,15 +81,15 @@
               text-gray-800
               border-b-2 border-gray-100
               focus:text-gray-500 focus:outline-none focus:border-gray-200" aria-label=" Default select example"
-                [formControlName]="control.name">
+                [formControlName]="control.field_name">
                 <option disabled selected hidden value="">Veuillez selectionner votre reponse</option>
                 <option *ngFor="let option of control.options" [value]="option.value">
                   {{ option.label }}
                 </option>
               </select>
               <span class="text-red-500 text-xs italic" *ngIf="
-                  dynamicForm.controls[control.name]?.invalid &&
-                  dynamicForm.controls[control.name]?.touched
+                  dynamicForm.controls[control.field_name]?.invalid &&
+                  dynamicForm.controls[control.field_name]?.touched
                 ">
                 {{ getErrorMessage(control) }}
               </span>

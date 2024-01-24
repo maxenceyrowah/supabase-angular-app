@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { QuestionsService } from 'src/app/@core/services/questions/questions.service';
-import { STATUS } from 'src/app/@core/models/status';
+
+import { CategoriesService } from 'src/app/@core/services/categories/categories.service';
 
 @Component({
   selector: 'app-questions-list',
@@ -12,25 +12,40 @@ import { STATUS } from 'src/app/@core/models/status';
 })
 export class QuestionsListComponent implements OnInit {
   questions: any;
+  categories: any;
 
-  constructor(private questionService: QuestionsService) {}
+  constructor(private categoriesService: CategoriesService) {}
 
   ngOnInit() {
-    this.getQuestions();
+    this.getQuestionsByCategory();
   }
 
-  getQuestions() {
-    this.questionService
-      .getQuestions()
-      .then((responses) => {
-        this.questions = responses?.data;
-      })
-      .catch((error) => {
-        console.log('[] error', error);
+  getQuestionsByCategory() {
+    this.categoriesService.getQuestionsByCategories().then((questions) => {
+      const groupedQuestionsByCategory: Record<any, any> = {};
+
+      (questions?.data || []).forEach((question: any) => {
+        const categoryId = question.category_id;
+
+        if (!groupedQuestionsByCategory[categoryId]) {
+          groupedQuestionsByCategory[categoryId] = {
+            category_id: categoryId,
+            label: question.categories.label,
+            value: question.categories.value,
+            questions: [],
+          };
+        }
+        groupedQuestionsByCategory[categoryId].questions.push({
+          id: question.id,
+          question: question.question,
+          status: question.status,
+        });
       });
+      this.categories = Object.values(groupedQuestionsByCategory);
+    });
   }
 
-  translateStatus(status: string) {
-    return STATUS[`${status}`];
+  trackById(index: number, obj: any): number {
+    return obj.id;
   }
 }
