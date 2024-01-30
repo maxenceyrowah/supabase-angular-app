@@ -24,7 +24,7 @@ export class SettingsComponent implements OnInit {
   questionForm: FormGroup;
   user: any;
   questions: any;
-  TYPE_FIELD = ['text', 'email', 'number', 'textarea'];
+  TYPE_FIELD = ['text', 'email', 'number', 'textarea', 'date'];
   TYPE_SELECT = ['select', 'radio'];
   categories: Category[];
 

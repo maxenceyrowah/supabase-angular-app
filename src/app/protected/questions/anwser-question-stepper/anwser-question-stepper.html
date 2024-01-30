@@ -1,0 +1,92 @@
+<div class="w-full lg:w-10/12 px-4 mx-auto mt-6 flex flex-col gap-5">
+  <div class="text-right">
+    <a routerLink="/dashboard/questions">
+      <button
+        class="text-center py-3 px-5
+    font-medium uppercase
+    focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">Précèdent</button>
+    </a>
+  </div>
+
+  <mat-stepper #stepper>
+    <form *ngIf="dynamicForm" [formGroup]="dynamicForm">
+      <div *ngFor="let category of categories; let cIndex = index">
+        <mat-step completed="false" [stepControl]="category.id">
+          <ng-template matStepLabel>{{ category.label | uppercase }}</ng-template>
+
+          <div class="mt-10" *ngFor="let res of category.questions; let rIndex = index">
+
+            <div *ngFor="let schema of res.schemas; let sIndex = index">
+              <label class="flex gap-1" [for]="schema.field_name">{{ res.question }}</label>
+
+              <!-- Text, Textarea & Number -->
+              <div class="mb-3" *ngIf="['text', 'number', 'textarea', 'email', 'date'].includes(schema.type)">
+                <input [type]="schema.type" class="block w-full py-3 px-1 mt-2 mb-4
+                text-gray-800 appearance-none
+                border-b-2
+                focus:text-gray-500 focus:outline-none focus:border-gray-200" [formControlName]="schema.field_name"
+                  [id]="schema.field_name" *ngIf="schema.type !== 'textarea'"
+                  placeholder="Veuillez saisir votre reponse" />
+
+                <textarea rows="10" class="block w-full py-3 px-1 mt-2 mb-4
+                  text-gray-800 appearance-none
+                  border-b-2 border-gray-100
+                  focus:text-gray-500 focus:outline-none focus:border-gray-200" [formControlName]="schema.field_name"
+                  *ngIf="schema.type === 'textarea'" [id]="schema.field_name">
+                </textarea>
+              </div>
+
+              <!-- Radio Button -->
+              <div class="mb-3" *ngIf="['radio'].includes(schema.type)">
+                <div class="form-check form-check-inline" *ngFor="let option of schema.options">
+                  <input class="form-check-input cursor-pointer" type="radio" [formControlName]="schema.field_name"
+                    [id]="schema.field_name" [value]="option.value" />
+                  <label class="form-check-label" [for]="schema.field_name">
+                    {{ option.label }}</label>
+                </div>
+              </div>
+
+              <!-- Select  -->
+              <div class="mb-3" *ngIf="['select'].includes(schema.type)">
+                <select class="block w-full py-3 px-1 mt-2
+              text-gray-800
+              border-b-2 border-gray-100
+              focus:text-gray-500 focus:outline-none focus:border-gray-200" [formControlName]="schema.field_name">
+                  <option disabled selected hidden value="">Veuillez selectionner votre reponse</option>
+                  <option *ngFor="let option of schema.options" [value]="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-4 mt-5 justify-between">
+            <div *ngIf="cIndex > 0">
+              <button matStepperPrevious class="text-center py-3 px-5
+font-medium uppercase
+focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">Précèdent</button>
+            </div>
+
+            <button
+              class="text-center py-3 px-5
+        font-medium uppercase
+        focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">Annuler</button>
+
+            <div *ngIf="stepper.selectedIndex === stepper.steps.length - 1;else saveButton">
+              <button type="submit" (click)="handleSubmit()" class="text-center py-3 px-5
+font-medium uppercase
+focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">Enregistrer</button>
+            </div>
+
+            <ng-template #saveButton>
+              <button matStepperNext class="text-center py-3 px-5
+font-medium uppercase
+focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">Suivant</button>
+            </ng-template>
+          </div>
+        </mat-step>
+      </div>
+    </form>
+  </mat-stepper>
+</div>

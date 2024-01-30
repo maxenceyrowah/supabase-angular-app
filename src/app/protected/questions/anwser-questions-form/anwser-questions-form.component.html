@@ -15,7 +15,7 @@
         <div class="row">
           <div *ngFor="let control of formStructure">
             <!-- Text, Textarea & Number -->
-            <div class="mb-3" *ngIf="['text', 'number', 'textarea', 'email'].includes(control.type)">
+            <div class="mb-3" *ngIf="['text', 'number', 'textarea', 'email', 'date'].includes(control.type)">
               <label for="exampleFormControlInput1" class="form-label flex gap-1">
                 {{ control.label }}
                 <div *ngIf="control?.validations?.length">

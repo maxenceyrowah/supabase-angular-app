@@ -41,7 +41,7 @@
             <td class="px-6 py-4 whitespace-nowrap">
               <div *ngFor="let result of category.questions" class="mt-3 flex items-baseline justify-between">
                 <div>{{ result.question }}</div>
-                <div>
+                <!-- <div>
                   <a [routerLink]="['/dashboard/questions', result.id, 'anwser']">
                     <button class="text-center py-2 px-5
                     font-medium uppercase
@@ -50,7 +50,19 @@
                       <ng-template #repondre>Répondre</ng-template>
                     </button>
                   </a>
-                </div>
+                </div> -->
+              </div>
+            </td>
+
+            <td>
+              <div>
+                <a routerLink="../questions/create-anwser-questions">
+                  <button class="text-center py-2 px-5
+                  font-medium uppercase
+                  focus:outline-none  hover:shadow-none  bg-indigo-50 text-indigo-600 rounded-md hover:bg-gray-200">
+                    <span>Repondre</span>
+                  </button>
+                </a>
               </div>
             </td>
           </tr>

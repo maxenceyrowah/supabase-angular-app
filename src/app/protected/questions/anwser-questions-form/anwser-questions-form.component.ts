@@ -13,11 +13,18 @@ import { IFormStructure } from 'src/app/@core/models/structure-form';
 import { AnwserService } from 'src/app/@core/services/anwser/anwser.service';
 import { UsersService } from 'src/app/@core/services/users/users.service';
 import { FoldersService } from 'src/app/@core/services/folders/folders.service';
+import { CategoriesService } from 'src/app/@core/services/categories/categories.service';
+import { AnwserQuestionStepperComponent } from '../anwser-question-stepper/anwser-question-stepper.component';
 
 @Component({
   selector: 'app-anwser-questions-form',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    AnwserQuestionStepperComponent,
+  ],
   templateUrl: './anwser-questions-form.component.html',
 })
 export class AnwserQuestionsFormComponent implements OnInit {
@@ -143,8 +150,12 @@ export class AnwserQuestionsFormComponent implements OnInit {
       question_id: this.questionId,
       user_id: this.user.id,
     };
+    console.log(
+      '🚀 ~ AnwserQuestionsFormComponent ~ save ~ dataForm:',
+      dataForm
+    );
 
-    this.handleAnswerCreationProcess(dataForm);
+    // this.handleAnswerCreationProcess(dataForm);
   }
   handleAnswerCreationProcess(content: any) {
     this.anwserService

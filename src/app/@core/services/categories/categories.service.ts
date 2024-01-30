@@ -28,7 +28,7 @@ export class CategoriesService {
     return await this.supabaseInstance.supabase
       .from('questions')
       .select(
-        `id, question, status, category_id, categories!inner (id, label, value)`
+        `id, question, status, schemas, category_id, categories!inner (id, label, value)`
       );
   }
 }

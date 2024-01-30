@@ -16,12 +16,39 @@ export const ProtectedRoutes: Routes = [
           import('./home/home.component').then((m) => m.HomeComponent),
       },
       {
-        path: 'profiles',
+        path: '',
         canMatch: [() => !inject(UsersService).isAdmin],
-        loadComponent: () =>
-          import('./profiles/profiles.component').then(
-            (m) => m.ProfilesComponent
-          ),
+        children: [
+          {
+            path: 'profiles',
+            loadComponent: () =>
+              import('./profiles/profiles.component').then(
+                (m) => m.ProfilesComponent
+              ),
+          },
+          {
+            path: 'questions',
+            loadComponent: () =>
+              import(
+                './questions/questions-list/questions-list.component'
+              ).then((m) => m.QuestionsListComponent),
+          },
+          {
+            path: 'questions/:questionId/anwser',
+            // path: 'questions/create-anwser-questions',
+            loadComponent: () =>
+              import(
+                './questions/anwser-questions-form/anwser-questions-form.component'
+              ).then((m) => m.AnwserQuestionsFormComponent),
+          },
+          {
+            path: 'questions/create-anwser-questions',
+            loadComponent: () =>
+              import(
+                './questions/anwser-question-stepper/anwser-question-stepper.component'
+              ).then((m) => m.AnwserQuestionStepperComponent),
+          },
+        ],
       },
       {
         path: 'settings',
@@ -30,22 +57,6 @@ export const ProtectedRoutes: Routes = [
           import('./settings//settings.component').then(
             (m) => m.SettingsComponent
           ),
-      },
-      {
-        path: 'questions',
-        canMatch: [() => !inject(UsersService).isAdmin],
-        loadComponent: () =>
-          import('./questions/questions-list/questions-list.component').then(
-            (m) => m.QuestionsListComponent
-          ),
-      },
-      {
-        path: 'questions/:questionId/anwser',
-        canMatch: [() => !inject(UsersService).isAdmin],
-        loadComponent: () =>
-          import(
-            './questions/anwser-questions-form/anwser-questions-form.component'
-          ).then((m) => m.AnwserQuestionsFormComponent),
       },
     ],
   },
